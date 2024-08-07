@@ -18,7 +18,7 @@ HASH_PATTERNS=(
 # Function to search and highlight terms
 search_and_highlight() {
   local term="$1"
-  grep -Ri --include="*" --color=always "$term" / 2>/dev/null | while read -r line; do
+  grep -Ri --include="*.{pass,password}" --color=always "$term" / 2>/dev/null | while read -r line; do
     # Extract the file path from the grep output
     FILE_PATH=$(echo "$line" | awk -F: '{print $1}')
     # Highlight the matching term in the line
@@ -30,14 +30,14 @@ search_and_highlight() {
   done
 }
 
-# Search for the defined search terms
+# Search for the defined search terms in specific file extensions
 for term in "${SEARCH_TERMS[@]}"; do
   search_and_highlight "$term"
 done
 
-# Search for the hash patterns
+# Search for the hash patterns in specific file extensions
 for pattern in "${HASH_PATTERNS[@]}"; do
-  grep -RPoi --include="*" --color=always "$pattern" / 2>/dev/null | while read -r line; do
+  grep -RPoi --include="*.{pass,password}" --color=always "$pattern" / 2>/dev/null | while read -r line; do
     # Extract the file path from the grep output
     FILE_PATH=$(echo "$line" | awk -F: '{print $1}')
     # Highlight the matching hash pattern in the line
